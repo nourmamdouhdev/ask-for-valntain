@@ -28,7 +28,7 @@ export default function App() {
   const [choiceType, setChoiceType] = useState(null);
   const [place, setPlace] = useState(null);
   const [date, setDate] = useState("");
-  const [time, setTime] = useState("");
+  const [time, setTime] = useState({ hour: "", minute: "", period: "" });
 
   const places = useMemo(() => {
     return choiceType === "Cafe" ? cafePlaces : restaurantPlaces;
@@ -38,15 +38,19 @@ export default function App() {
     setChoiceType(type);
     setPlace(null);
     setDate("");
-    setTime("");
+    setTime({ hour: "", minute: "", period: "" });
     setStep(STEPS.PLACE);
   };
+
+  const formattedTime = time.hour && time.minute && time.period
+    ? `${time.hour}:${time.minute} ${time.period}`
+    : "";
 
   const summary = {
     type: choiceType ?? "",
     place: place?.name ?? "",
     date,
-    time
+    time: formattedTime
   };
 
   return (

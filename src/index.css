@@ -41,6 +41,20 @@ body {
   z-index: 0;
 }
 
+.app::after {
+  content: "";
+  position: absolute;
+  inset: -10%;
+  background:
+    radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.25), transparent 45%),
+    radial-gradient(circle at 80% 10%, rgba(255, 210, 230, 0.3), transparent 50%),
+    radial-gradient(circle at 70% 80%, rgba(255, 170, 200, 0.25), transparent 55%);
+  opacity: 0.7;
+  mix-blend-mode: screen;
+  animation: glowShift 14s ease-in-out infinite;
+  z-index: 0;
+}
+
 .hearts {
   position: absolute;
   inset: 0;
@@ -96,6 +110,18 @@ body {
   }
 }
 
+@keyframes glowShift {
+  0% {
+    transform: translateX(-2%) translateY(0) scale(1);
+  }
+  50% {
+    transform: translateX(2%) translateY(-2%) scale(1.04);
+  }
+  100% {
+    transform: translateX(-2%) translateY(0) scale(1);
+  }
+}
+
 .step-shell {
   position: relative;
   z-index: 2;
@@ -123,10 +149,50 @@ body {
   box-shadow: 0 30px 70px rgba(92, 0, 32, 0.35);
   backdrop-filter: blur(12px);
   text-align: center;
+  position: relative;
+  overflow: hidden;
+  animation: cardFloat 9s ease-in-out infinite;
+}
+
+.card::after {
+  content: "";
+  position: absolute;
+  inset: -40%;
+  background: linear-gradient(120deg, transparent 20%, rgba(255, 255, 255, 0.25), transparent 60%);
+  transform: translateX(-60%);
+  animation: shimmer 8s ease-in-out infinite;
+  pointer-events: none;
 }
 
 .card-wide {
   width: min(820px, 92vw);
+}
+
+@keyframes cardFloat {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-60%);
+    opacity: 0.2;
+  }
+  50% {
+    transform: translateX(20%);
+    opacity: 0.45;
+  }
+  100% {
+    transform: translateX(60%);
+    opacity: 0.2;
+  }
 }
 
 h1 {
@@ -194,6 +260,10 @@ p {
   border: 1px dashed rgba(255, 255, 255, 0.7);
 }
 
+.no-btn {
+  z-index: 3;
+}
+
 .place-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
@@ -238,7 +308,8 @@ p {
 }
 
 input[type="date"],
-input[type="time"] {
+input[type="time"],
+select {
   padding: 10px 14px;
   border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.4);
@@ -250,6 +321,280 @@ input[type="time"] {
 input[type="date"]::-webkit-calendar-picker-indicator,
 input[type="time"]::-webkit-calendar-picker-indicator {
   filter: invert(1);
+}
+
+select {
+  appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, rgba(255, 255, 255, 0.7) 50%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.7) 50%, transparent 50%);
+  background-position: calc(100% - 18px) calc(1em + 2px), calc(100% - 12px) calc(1em + 2px);
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+  padding-right: 32px;
+}
+
+.datetime-card {
+  width: min(880px, 92vw);
+  text-align: left;
+  overflow: visible;
+}
+
+.datetime-sparkles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.sparkle {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.6);
+  animation: twinkle 3.2s ease-in-out infinite;
+}
+
+.sparkle.s1 {
+  top: 14%;
+  right: 12%;
+  animation-delay: 0s;
+}
+
+.sparkle.s2 {
+  top: 48%;
+  left: 8%;
+  animation-delay: 0.6s;
+}
+
+.sparkle.s3 {
+  bottom: 18%;
+  right: 28%;
+  animation-delay: 1.2s;
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    transform: scale(0.6);
+    opacity: 0.4;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.9;
+  }
+}
+
+.datetime-header {
+  text-align: center;
+  margin-bottom: 18px;
+}
+
+.datetime-body {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 24px;
+  align-items: center;
+}
+
+.datetime-panel {
+  position: relative;
+  padding: 22px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  text-align: center;
+  overflow: hidden;
+}
+
+.glow-ring {
+  position: absolute;
+  inset: -20%;
+  border-radius: 50%;
+  border: 1px dashed rgba(255, 255, 255, 0.5);
+  animation: ringPulse 6s ease-in-out infinite;
+}
+
+.clock-face {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  margin: 0 auto 14px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: inset 0 0 16px rgba(255, 255, 255, 0.2);
+}
+
+.clock-hand {
+  position: absolute;
+  left: 50%;
+  bottom: 50%;
+  transform-origin: bottom center;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 999px;
+}
+
+.clock-hand.short {
+  width: 6px;
+  height: 38px;
+  margin-left: -3px;
+  animation: clockSpinShort 8s linear infinite;
+}
+
+.clock-hand.long {
+  width: 4px;
+  height: 54px;
+  margin-left: -2px;
+  animation: clockSpinLong 4s linear infinite;
+}
+
+.clock-dot {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: #fff;
+  border-radius: 50%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.panel-title {
+  font-family: "Playfair Display", serif;
+  font-size: 1.1rem;
+  margin-bottom: 6px;
+}
+
+.panel-text {
+  font-size: 0.95rem;
+  opacity: 0.9;
+}
+
+.datetime-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.time-selects {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.happy-select {
+  position: relative;
+}
+
+.happy-select-button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 36px 10px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.18);
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.happy-select-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 18px rgba(255, 160, 190, 0.35);
+}
+
+.happy-select-button .placeholder {
+  opacity: 0.65;
+}
+
+.chevron {
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid rgba(255, 255, 255, 0.85);
+  transition: transform 0.2s ease;
+}
+
+.chevron.open {
+  transform: rotate(180deg);
+}
+
+.happy-select-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 14px;
+  padding: 8px;
+  margin: 0;
+  list-style: none;
+  max-height: 220px;
+  overflow-y: auto;
+  z-index: 5;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 16px 30px rgba(86, 0, 25, 0.28);
+}
+
+.happy-select-menu li {
+  margin: 0;
+  padding: 0;
+}
+
+.happy-select-option {
+  width: 100%;
+  text-align: left;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: none;
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.happy-select-option:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.happy-select-option.selected {
+  background: rgba(255, 255, 255, 0.35);
+}
+
+@keyframes ringPulse {
+  0%,
+  100% {
+    transform: scale(0.9);
+    opacity: 0.4;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.8;
+  }
+}
+
+@keyframes clockSpinShort {
+  0% {
+    transform: translateX(-50%) rotate(0deg);
+  }
+  100% {
+    transform: translateX(-50%) rotate(360deg);
+  }
+}
+
+@keyframes clockSpinLong {
+  0% {
+    transform: translateX(-50%) rotate(0deg);
+  }
+  100% {
+    transform: translateX(-50%) rotate(720deg);
+  }
 }
 
 .summary {
@@ -307,5 +652,13 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 
   .place-grid {
     grid-template-columns: 1fr;
+  }
+
+  .datetime-body {
+    grid-template-columns: 1fr;
+  }
+
+  .datetime-header {
+    text-align: left;
   }
 }
